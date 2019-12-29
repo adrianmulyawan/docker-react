@@ -1,0 +1,13 @@
+sudo: required
+# merupakan hak akses tingkat pengguna
+services:
+    - docker
+    # services: docker -> membuat salinan docker ke dalam wadah (container) yang sedang berjalan
+
+before_install:
+    - docker build -t adrmulyawan/docker-react -f Dockerfile.dev .
+    # before_install serangkaian langkah yang digunakan untuk membuat apa saja yang harus dikerjakan
+    # sebelum proses install
+
+script:
+    - docker run adrmulyawan/docker-react npm run test -- --coverage
