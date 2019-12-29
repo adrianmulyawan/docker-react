@@ -1,0 +1,27 @@
+version: '3'
+# service : tempat semua daftar layanan / wadah berbeda yang akan dibuat ketika menjalankan docker / menyusunnya
+services:
+    # untuk namanya sifatnya opsional mau node-app, react-app. Tapi disini saya pakai web 
+    web:
+        # selanjutnya kita perlu menentukan gambar / hanya dockerfile yang akan kita gunakan untuk membuat wadah awal ini
+        # sebelumnya kita hanya dapat menggunakan (build: .). Namun dengan (build: .)yang menganggap bahwa kami memiliki dockerfile didalam direktori kerja saat ini
+        # untuk sementara kita gunakan (build: .)
+        build:
+            context: .
+            dockerfile: Dockerfile.dev
+        ports: 
+            - "3000:3000"
+        # untuk volumes ini  merupakan bagian dimana kita dapat melakukan singkatan untuk menentukan / volume
+        volumes: 
+            - /app/node_modules
+            # . -> direktori kerja saat ini
+            # :/app -> folder saat ini diluar wadah kefolder didalam wadah
+            - .:/app  
+    tests:
+        build: 
+            context: .
+            dockerfile: Dockerfile.dev
+        volumes: 
+            - /app/node_modules
+            - .:/app
+        command: ["npm", "run", "test"]
